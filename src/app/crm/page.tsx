@@ -339,10 +339,20 @@ export default function CRMPage() {
   };
 
   const openEditLeadModal = (lead: Lead) => {
-    setLeadForm({ ...lead });
-    setEditingLeadId(lead.id);
-    setShowLeadModal(true);
-  };
+  setLeadForm({
+    nama: lead.nama,
+    perusahaan: lead.perusahaan || "",
+    email: lead.email || "",
+    telepon: lead.telepon || "",
+    sumber: lead.sumber,
+    status: lead.status,
+    assignedTo: lead.assignedTo || "",
+    catatan: lead.catatan || "",
+  });
+  
+  setEditingLeadId(lead.id);
+  setShowLeadModal(true);
+};
 
   const saveLead = () => {
     if (!leadForm.nama) return;
