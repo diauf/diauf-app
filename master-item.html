@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Item - DIAUF.ID</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .title-font {
+            font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+            font-weight: 600;
+        }
+
+        .section-card {
+            box-shadow: 0 1px 3px 0 rgb(15 23 42 / 0.04);
+        }
+
+        .modern-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #475569;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .modern-table td {
+            color: #1e2937;
+        }
+
+        .modern-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .clean-input {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .clean-input:focus {
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        .modal {
+            animation: modalPop 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes modalPop {
+            from { 
+                transform: translateY(10px) scale(0.98); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+
+        .setting-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .setting-card:hover {
+            box-shadow: 0 4px 6px -1px rgb(15 23 42 / 0.05);
+        }
+
+        .item-row {
+            transition: background-color 0.1s ease;
+        }
+        
+        .item-row:hover {
+            background-color: #f8fafc;
+        }
+
+        .stat-pill {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.625rem;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+    <!-- Header -->
+    <div class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 py-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-500 rounded-3xl flex items-center justify-center">
+                        <i class="fa-solid fa-boxes text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-semibold text-slate-900 title-font tracking-tight">Master Item</h1>
+                        <p class="text-sm text-slate-600">Kelola barang, jasa, dan produk perusahaan</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <div class="px-4 py-1.5 bg-slate-100 rounded-3xl flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-building text-emerald-500"></i>
+                        <span class="font-medium text-slate-700">PT. Diauf Indonesia</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        
+        <!-- Toolbar -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 mb-5 section-card">
+            <div class="flex flex-col lg:flex-row lg:items-center gap-4">
+                
+                <!-- Search -->
+                <div class="flex-1">
+                    <div class="relative">
+                        <i class="fa-solid fa-search absolute left-4 top-3.5 text-slate-400"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            placeholder="Cari kode atau nama item..." 
+                            class="clean-input w-full pl-11 pr-4 py-3 border border-slate-300 rounded-3xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-emerald-500"
+                            onkeyup="filterTable()">
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-3">
+                    <select id="filterKategori" onchange="filterTable()" 
+                            class="clean-input px-4 py-3 border border-slate-300 rounded-3xl text-sm text-slate-800 focus:outline-none focus:border-emerald-500 bg-white min-w-[160px]">
+                        <option value="">Semua Kategori</option>
+                    </select>
+
+                    <select id="filterSatuan" onchange="filterTable()" 
+                            class="clean-input px-4 py-3 border border-slate-300 rounded-3xl text-sm text-slate-800 focus:outline-none focus:border-emerald-500 bg-white min-w-[140px]">
+                        <option value="">Semua Satuan</option>
+                    </select>
+
+                    <select id="filterStatus" onchange="filterTable()" 
+                            class="clean-input px-4 py-3 border border-slate-300 rounded-3xl text-sm text-slate-800 focus:outline-none focus:border-emerald-500 bg-white">
+                        <option value="">Semua Status</option>
+                        <option value="Aktif">Aktif</option>
+                        <option value="Nonaktif">Nonaktif</option>
+                    </select>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button onclick="openSettingsModal()" 
+                            class="px-4 py-3 flex items-center gap-2 text-sm font-medium text-emerald-600 hover:bg-emerald-50 border border-emerald-200 rounded-3xl transition-colors">
+                        <i class="fa-solid fa-cog"></i>
+                        <span>Pengaturan Kategori &amp; Satuan</span>
+                    </button>
+
+                    <button onclick="exportData()" 
+                            class="px-4 py-3 flex items-center gap-2 text-sm font-medium text-slate-700 hover:bg-slate-100 border border-slate-300 rounded-3xl transition-colors">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Export</span>
+                    </button>
+
+                    <button onclick="importData()" 
+                            class="px-4 py-3 flex items-center gap-2 text-sm font-medium text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-3xl transition-colors">
+                        <i class="fa-solid fa-upload"></i>
+                        <span>Import</span>
+                    </button>
+
+                    <button onclick="openAddModal()" 
+                            class="px-5 py-3 flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold rounded-3xl transition-colors shadow-sm">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Tambah Item</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden section-card">
+            <div class="overflow-x-auto">
+                <table class="min-w-full modern-table">
+                    <thead>
+                        <tr>
+                            <th class="px-5 py-4 text-left font-semibold">Kode</th>
+                            <th class="px-5 py-4 text-left font-semibold">Nama Item</th>
+                            <th class="px-5 py-4 text-left font-semibold">Kategori</th>
+                            <th class="px-5 py-4 text-left font-semibold">Satuan</th>
+                            <th class="px-5 py-4 text-right font-semibold">Harga Beli</th>
+                            <th class="px-5 py-4 text-right font-semibold">Harga Jual</th>
+                            <th class="px-5 py-4 text-center font-semibold">Stok</th>
+                            <th class="px-5 py-4 text-left font-semibold">Status</th>
+                            <th class="px-5 py-4 text-right font-semibold w-24">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemTableBody" class="divide-y divide-slate-100">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="px-5 py-4 border-t bg-slate-50 flex items-center justify-between text-xs text-slate-600">
+                <div id="tableInfo">Menampilkan <span id="showingCount">0</span> dari <span id="totalCount">0</span> item</div>
+                <div class="px-3 py-1 bg-white border border-slate-200 rounded-3xl text-xs">Halaman 1 dari 1</div>
+            </div>
+        </div>
+
+        <div class="mt-4 px-1 text-xs text-slate-600 flex items-center gap-2">
+            <i class="fa-solid fa-info-circle text-emerald-500"></i>
+            <span>Kode item di-generate otomatis berdasarkan prefix kategori yang dipilih.</span>
+        </div>
+
+    </div>
+
+    <!-- ==================== MODAL: TAMBAH / EDIT ITEM ==================== -->
+    <div id="itemModal" onclick="if (event.target.id === 'itemModal') closeItemModal()" 
+         class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="w-full max-w-lg bg-white rounded-3xl shadow-xl overflow-hidden modal">
+            
+            <div class="px-6 py-5 border-b flex items-center justify-between">
+                <div>
+                    <h3 id="modalTitle" class="text-xl font-semibold text-slate-900">Tambah Item Baru</h3>
+                    <p class="text-sm text-slate-600">Lengkapi informasi item dan hubungkan dengan akun COA</p>
+                </div>
+                <button onclick="closeItemModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-5">
+                
+                <!-- Kode & Nama -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Kode Item</label>
+                        <input type="text" id="kode" 
+                               class="clean-input w-full border border-slate-300 rounded-3xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none">
+                        <p class="text-xs text-emerald-600 mt-1">Otomatis di-generate dari kategori</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Item</label>
+                        <input type="text" id="nama" placeholder="Laptop Dell Inspiron 14"
+                               class="clean-input w-full border border-slate-300 rounded-3xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Kategori & Satuan -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Kategori</label>
+                        <select id="kategori" onchange="onCategoryChange()" 
+                                class="clean-input w-full border border-slate-300 rounded-3xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none">
+                            <!-- populated by JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Satuan</label>
+                        <select id="satuan" 
+                                class="clean-input w-full border border-slate-300 rounded-3xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none">
+                            <!-- populated by JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Harga -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Harga Beli (Rp)</label>
+                        <input type="number" id="hargaBeli" value="8500000"
+                               class="clean-input w-full border border-slate-300 rounded-3xl px-4 py-2.5 text-sm text-right text-slate-800 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Harga Jual (Rp)</label>
+                        <input type="number" id="hargaJual" value="10500000"
+                               class="clean-input w-full border border-slate-300 rounded-3xl px-4 py-2.5 text-sm text-right text-slate-800 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Stok Saat Ini</label>
+                        <input type="number" id="stok" value="18"
+                               class="clean-input w-full border border-slate-300 rounded-3xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Status</label>
+                        <select id="status" 
+                                class="clean-input w-full border border-slate-300 rounded-3xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none">
+                            <option value="Aktif">Aktif</option>
+                            <option value="Nonaktif">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- COA Section -->
+                <div class="pt-2 border-t">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Akun COA (untuk pencatatan akuntansi)</label>
+                    
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 border border-slate-300 bg-slate-50 rounded-3xl px-4 py-3 text-sm">
+                            <div id="selectedCoaDisplay" class="flex-1 text-slate-800 font-medium">
+                                <span class="text-slate-400">Belum dipilih</span>
+                            </div>
+                            <input type="hidden" id="coaId">
+                            <input type="hidden" id="coaCode">
+                            <input type="hidden" id="coaName">
+                        </div>
+                        
+                        <button onclick="openCoaPickerModal()" 
+                                class="px-4 py-3 text-sm font-medium border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-3xl flex items-center gap-2 transition-colors">
+                            <i class="fa-solid fa-search"></i>
+                            <span>Pilih Akun COA</span>
+                        </button>
+                    </div>
+
+                    <div class="mt-3 flex items-start gap-2.5 bg-emerald-50 border border-emerald-200 px-4 py-3 rounded-3xl">
+                        <input type="checkbox" id="bulkApplyCheckbox" class="mt-0.5 accent-emerald-500 w-4 h-4">
+                        <div class="flex-1">
+                            <label for="bulkApplyCheckbox" class="text-sm font-medium text-emerald-700 cursor-pointer">
+                                Terapkan akun COA ini ke semua item dengan kategori yang sama
+                            </label>
+                            <p class="text-xs text-emerald-600 mt-0.5">Berguna untuk pemetaan akun persediaan atau pendapatan secara massal.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="px-6 py-4 bg-slate-50 flex justify-end gap-3 border-t">
+                <button onclick="closeItemModal()" 
+                        class="px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-white border border-slate-300 rounded-3xl transition-colors">
+                    Batal
+                </button>
+                <button onclick="saveItem()" 
+                        class="px-6 py-2.5 text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 text-white rounded-3xl transition-colors">
+                    Simpan Item
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: PENGATURAN KATEGORI & SATUAN ==================== -->
+    <div id="settingsModal" onclick="if (event.target.id === 'settingsModal') closeSettingsModal()" 
+         class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="w-full max-w-4xl bg-white rounded-3xl shadow-xl modal">
+            
+            <div class="px-6 py-5 border-b flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-semibold text-slate-900">Pengaturan Kategori &amp; Satuan</h3>
+                    <p class="text-sm text-slate-600">Kelola daftar kategori dan satuan beserta aturan kode item</p>
+                </div>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- KATEGORI -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="font-semibold text-slate-800">Kategori</h4>
+                            <p class="text-xs text-emerald-600">Setiap kategori memiliki kode sendiri</p>
+                        </div>
+                        <button onclick="showAddCategoryForm()" 
+                                class="px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 text-white bg-emerald-500 hover:bg-emerald-600 rounded-2xl transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Tambah Kategori</span>
+                        </button>
+                    </div>
+
+                    <!-- Add/Edit Category Form -->
+                    <div id="categoryForm" class="hidden mb-4 p-4 bg-slate-50 rounded-3xl border border-slate-200">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs font-medium text-slate-600">Nama Kategori</label>
+                                <input id="catName" type="text" class="clean-input w-full mt-1 px-3 py-2 border border-slate-300 rounded-2xl text-sm" placeholder="Barang Jadi">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600">Prefix Kode</label>
+                                    <input id="catPrefix" type="text" class="clean-input w-full mt-1 px-3 py-2 border border-slate-300 rounded-2xl text-sm font-mono" placeholder="BJ">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600">Digit Otomatis</label>
+                                    <select id="catDigits" class="clean-input w-full mt-1 px-3 py-2 border border-slate-300 rounded-2xl text-sm">
+                                        <option value="2">2 digit</option>
+                                        <option value="3" selected>3 digit</option>
+                                        <option value="4">4 digit</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <button onclick="saveCategory()" id="saveCatBtn"
+                                        class="flex-1 py-2 text-sm font-medium bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl transition-colors">Simpan</button>
+                                <button onclick="cancelCategoryForm()" 
+                                        class="flex-1 py-2 text-sm font-medium border border-slate-300 hover:bg-white rounded-2xl transition-colors">Batal</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category List -->
+                    <div id="categoryList" class="border border-slate-200 rounded-3xl overflow-hidden text-sm bg-white max-h-[240px] overflow-y-auto">
+                        <!-- populated by JS -->
+                    </div>
+                    
+                    <p class="text-xs text-emerald-600 mt-2">Kode akan otomatis pakai prefix + nomor urut berdasarkan kategori yang dipilih.</p>
+                </div>
+
+                <!-- SATUAN -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="font-semibold text-slate-800">Satuan</h4>
+                        </div>
+                        <button onclick="showAddUnitForm()" 
+                                class="px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 text-white bg-emerald-500 hover:bg-emerald-600 rounded-2xl transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Tambah Satuan</span>
+                        </button>
+                    </div>
+
+                    <!-- Add/Edit Unit Form -->
+                    <div id="unitForm" class="hidden mb-4 p-4 bg-slate-50 rounded-3xl border border-slate-200">
+                        <div class="flex gap-2">
+                            <input id="unitName" type="text" placeholder="Contoh: Unit, Kg, Liter" 
+                                   class="clean-input flex-1 px-3 py-2 border border-slate-300 rounded-2xl text-sm">
+                            <button onclick="saveUnit()" id="saveUnitBtn"
+                                    class="px-4 py-2 text-sm font-medium bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl transition-colors">Simpan</button>
+                            <button onclick="cancelUnitForm()" 
+                                    class="px-4 py-2 text-sm font-medium border border-slate-300 hover:bg-white rounded-2xl transition-colors">Batal</button>
+                        </div>
+                    </div>
+
+                    <!-- Unit List -->
+                    <div id="unitList" class="border border-slate-200 rounded-3xl overflow-hidden text-sm bg-white max-h-[240px] overflow-y-auto">
+                        <!-- populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 bg-slate-50 border-t text-xs text-slate-600 rounded-b-3xl">
+                <strong>Catatan:</strong> Pilih kategori di form Item → kode otomatis sesuai prefix kategori tersebut. 
+                Edit/hapus di sini akan langsung memperbarui pilihan di form dan filter.
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: PILIH AKUN COA ==================== -->
+    <div id="coaPickerModal" onclick="if (event.target.id === 'coaPickerModal') closeCoaPickerModal()" 
+         class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[70] p-4">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="w-full max-w-md bg-white rounded-3xl shadow-xl overflow-hidden modal">
+            
+            <div class="px-5 py-4 border-b flex items-center justify-between">
+                <div>
+                    <h3 class="font-semibold text-lg text-slate-900">Pilih Akun COA</h3>
+                    <p class="text-xs text-slate-600">Pilih akun yang sesuai untuk item ini</p>
+                </div>
+                <button onclick="closeCoaPickerModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-4">
+                <div class="relative mb-3">
+                    <i class="fa-solid fa-search absolute left-4 top-3 text-slate-400"></i>
+                    <input type="text" id="coaSearchInput" placeholder="Cari kode atau nama akun..." 
+                           onkeyup="filterCoaList()"
+                           class="clean-input w-full pl-11 py-3 border border-slate-300 rounded-3xl text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div class="max-h-[260px] overflow-y-auto border border-slate-200 rounded-3xl" id="coaListContainer">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="p-4 border-t bg-slate-50 text-xs text-slate-600">
+                Tip: Pilih akun persediaan untuk barang jadi/bahan baku atau akun pendapatan untuk jasa.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind config
+        function initTailwind() {
+            document.documentElement.style.setProperty('--accent', '#10b981');
+        }
+
+        // ==================== DATA ====================
+        let items = [
+            { id: 1, kode: "BJ-001", nama: "Laptop Dell Inspiron 14", kategori: "Barang Jadi", satuan: "Unit", hargaBeli: 8500000, hargaJual: 10500000, stok: 18, status: "Aktif", coaCode: "1130", coaName: "Persediaan Barang Dagang" },
+            { id: 2, kode: "BJ-002", nama: "Mouse Wireless Logitech", kategori: "Barang Jadi", satuan: "Pcs", hargaBeli: 85000, hargaJual: 125000, stok: 120, status: "Aktif", coaCode: "1130", coaName: "Persediaan Barang Dagang" },
+            { id: 3, kode: "JS-001", nama: "Jasa Instalasi Software", kategori: "Jasa", satuan: "Unit", hargaBeli: 0, hargaJual: 750000, stok: 0, status: "Aktif", coaCode: "4200", coaName: "Pendapatan Jasa" },
+            { id: 4, kode: "BB-001", nama: "Kayu Jati Premium", kategori: "Bahan Baku", satuan: "Kg", hargaBeli: 45000, hargaJual: 65000, stok: 350, status: "Aktif", coaCode: "1120", coaName: "Piutang Usaha" },
+            { id: 5, kode: "BJ-003", nama: "Kabel Power 2 Meter", kategori: "Barang Jadi", satuan: "Pcs", hargaBeli: 18500, hargaJual: 27500, stok: 85, status: "Nonaktif", coaCode: "1130", coaName: "Persediaan Barang Dagang" },
+            { id: 6, kode: "PR-001", nama: "Printer Laser HP", kategori: "Peralatan", satuan: "Unit", hargaBeli: 2750000, hargaJual: 3200000, stok: 7, status: "Aktif", coaCode: "", coaName: "" }
+        ];
+
+        let categories = [
+            { id: 1, name: "Barang Jadi", code_prefix: "BJ", code_length: 3 },
+            { id: 2, name: "Bahan Baku", code_prefix: "BB", code_length: 3 },
+            { id: 3, name: "Jasa", code_prefix: "JS", code_length: 3 },
+            { id: 4, name: "Peralatan", code_prefix: "PR", code_length: 3 }
+        ];
+
+        let units = [
+            { id: 1, name: "Unit" },
+            { id: 2, name: "Pcs" },
+            { id: 3, name: "Kg" },
+            { id: 4, name: "Liter" },
+            { id: 5, name: "Box" }
+        ];
+
+        let coaList = [
+            { id: "c1", code: "1130", name: "Persediaan Barang Dagang", type: "Aset" },
+            { id: "c2", code: "5100", name: "Beban Pokok Penjualan", type: "Beban" },
+            { id: "c3", code: "4100", name: "Pendapatan Penjualan", type: "Pendapatan" },
+            { id: "c4", code: "4200", name: "Pendapatan Jasa", type: "Pendapatan" },
+            { id: "c5", code: "1120", name: "Piutang Usaha", type: "Aset" },
+            { id: "c6", code: "1230", name: "Peralatan Kantor", type: "Aset" }
+        ];
+
+        let currentEditId = null;
+        let currentCoaSelectionCallback = null;
+        let editingCategoryId = null;
+        let editingUnitId = null;
+
+        // ==================== RENDER TABLE ====================
+        function renderTable(filteredItems = null) {
+            const tbody = document.getElementById('itemTableBody');
+            tbody.innerHTML = '';
+
+            const dataToShow = filteredItems || items;
+
+            if (dataToShow.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="px-6 py-14 text-center">
+                            <div class="flex flex-col items-center text-slate-500">
+                                <i class="fa-solid fa-box-open text-4xl mb-4 text-slate-300"></i>
+                                <p class="font-medium text-slate-700">Tidak ada item yang ditemukan</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                updateTableInfo(0, items.length);
+                return;
+            }
+
+            dataToShow.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = `item-row border-b border-slate-100 last:border-none`;
+                
+                const hargaBeliFmt = new Intl.NumberFormat('id-ID').format(item.hargaBeli);
+                const hargaJualFmt = new Intl.NumberFormat('id-ID').format(item.hargaJual);
+
+                const coaBadge = item.coaCode ? 
+                    `<span class="inline-block px-2 py-0.5 text-xs font-medium rounded-2xl bg-emerald-100 text-emerald-700">${item.coaCode}</span>` : 
+                    `<span class="text-slate-400 text-xs">—</span>`;
+
+                row.innerHTML = `
+                    <td class="px-5 py-4 font-mono text-sm font-medium text-slate-800">${item.kode}</td>
+                    <td class="px-5 py-4">
+                        <div class="font-medium text-slate-900">${item.nama}</div>
+                    </td>
+                    <td class="px-5 py-4">
+                        <span class="inline-block px-3 py-1 text-xs font-medium rounded-3xl bg-slate-100 text-slate-700">${item.kategori}</span>
+                    </td>
+                    <td class="px-5 py-4 text-slate-700">${item.satuan}</td>
+                    <td class="px-5 py-4 text-right font-medium text-slate-800">Rp ${hargaBeliFmt}</td>
+                    <td class="px-5 py-4 text-right font-medium text-emerald-700">Rp ${hargaJualFmt}</td>
+                    <td class="px-5 py-4 text-center">
+                        <span class="font-medium ${item.stok > 10 ? 'text-slate-700' : 'text-amber-600'}">${item.stok}</span>
+                    </td>
+                    <td class="px-5 py-4">
+                        <span class="stat-pill ${item.status === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="px-5 py-4">
+                        <div class="flex items-center justify-end gap-1">
+                            <button onclick="editItem(${item.id})" class="p-2 text-blue-600 hover:bg-blue-100 rounded-2xl transition-colors" title="Edit">
+                                <i class="fa-solid fa-edit"></i>
+                            </button>
+                            <button onclick="deleteItem(${item.id})" class="p-2 text-red-600 hover:bg-red-100 rounded-2xl transition-colors" title="Hapus">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            updateTableInfo(dataToShow.length, items.length);
+        }
+
+        function updateTableInfo(showing, total) {
+            document.getElementById('showingCount').textContent = showing;
+            document.getElementById('totalCount').textContent = total;
+        }
+
+        // ==================== FILTER ====================
+        function filterTable() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const kategori = document.getElementById('filterKategori').value;
+            const satuan = document.getElementById('filterSatuan').value;
+            const status = document.getElementById('filterStatus').value;
+
+            const filtered = items.filter(item => {
+                const matchSearch = item.kode.toLowerCase().includes(search) || item.nama.toLowerCase().includes(search);
+                const matchKategori = !kategori || item.kategori === kategori;
+                const matchSatuan = !satuan || item.satuan === satuan;
+                const matchStatus = !status || item.status === status;
+                return matchSearch && matchKategori && matchSatuan && matchStatus;
+            });
+
+            renderTable(filtered);
+        }
+
+        // ==================== POPULATE FILTERS ====================
+        function populateFilters() {
+            const catSelect = document.getElementById('filterKategori');
+            const satSelect = document.getElementById('filterSatuan');
+
+            // Kategori filter
+            catSelect.innerHTML = `<option value="">Semua Kategori</option>`;
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.name;
+                opt.textContent = cat.name;
+                catSelect.appendChild(opt);
+            });
+
+            // Satuan filter
+            satSelect.innerHTML = `<option value="">Semua Satuan</option>`;
+            units.forEach(unit => {
+                const opt = document.createElement('option');
+                opt.value = unit.name;
+                opt.textContent = unit.name;
+                satSelect.appendChild(opt);
+            });
+        }
+
+        // ==================== ITEM FORM POPULATE ====================
+        function populateItemFormSelects() {
+            const katSelect = document.getElementById('kategori');
+            const satSelect = document.getElementById('satuan');
+
+            katSelect.innerHTML = '';
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.name;
+                opt.textContent = cat.name;
+                katSelect.appendChild(opt);
+            });
+
+            satSelect.innerHTML = '';
+            units.forEach(unit => {
+                const opt = document.createElement('option');
+                opt.value = unit.name;
+                opt.textContent = unit.name;
+                satSelect.appendChild(opt);
+            });
+        }
+
+        // ==================== AUTO GENERATE KODE ====================
+        function generateItemCode(kategoriName) {
+            const category = categories.find(c => c.name === kategoriName);
+            if (!category) return "ITEM-001";
+
+            const prefix = category.code_prefix;
+            const length = category.code_length || 3;
+
+            // Find existing items in this category
+            const existing = items
+                .filter(i => i.kategori === kategoriName && i.kode.startsWith(prefix))
+                .map(i => {
+                    const numStr = i.kode.replace(prefix, "");
+                    return parseInt(numStr) || 0;
+                });
+
+            const maxNum = existing.length > 0 ? Math.max(...existing) : 0;
+            const nextNum = (maxNum + 1).toString().padStart(length, "0");
+
+            return `${prefix}${nextNum}`;
+        }
+
+        function onCategoryChange() {
+            const kategori = document.getElementById('kategori').value;
+            const kodeInput = document.getElementById('kode');
+            
+            // Only auto-generate if this is a new item or user hasn't manually edited the code
+            if (!document.getElementById('itemModal').classList.contains('hidden')) {
+                const currentKode = kodeInput.value;
+                // Auto generate only if the field looks like a generated code or is empty
+                if (!currentKode || currentKode.match(/^[A-Z]{2,3}-\d+$/)) {
+                    kodeInput.value = generateItemCode(kategori);
+                }
+            }
+        }
+
+        // ==================== MODAL: ITEM ====================
+        function openAddModal() {
+            currentEditId = null;
+            document.getElementById('modalTitle').innerText = 'Tambah Item Baru';
+            
+            document.getElementById('kode').value = '';
+            document.getElementById('nama').value = '';
+            document.getElementById('hargaBeli').value = '';
+            document.getElementById('hargaJual').value = '';
+            document.getElementById('stok').value = '0';
+            document.getElementById('status').value = 'Aktif';
+            document.getElementById('bulkApplyCheckbox').checked = false;
+
+            // Reset COA
+            document.getElementById('selectedCoaDisplay').innerHTML = `<span class="text-slate-400">Belum dipilih</span>`;
+            document.getElementById('coaId').value = '';
+            document.getElementById('coaCode').value = '';
+            document.getElementById('coaName').value = '';
+
+            populateItemFormSelects();
+
+            // Set default category and auto generate code
+            const katSelect = document.getElementById('kategori');
+            if (katSelect.options.length > 0) {
+                katSelect.selectedIndex = 0;
+                document.getElementById('kode').value = generateItemCode(katSelect.value);
+            }
+
+            document.getElementById('itemModal').classList.remove('hidden');
+            document.getElementById('itemModal').classList.add('flex');
+        }
+
+        function editItem(id) {
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+
+            currentEditId = id;
+            document.getElementById('modalTitle').innerText = 'Edit Item';
+
+            document.getElementById('kode').value = item.kode;
+            document.getElementById('nama').value = item.nama;
+            document.getElementById('hargaBeli').value = item.hargaBeli;
+            document.getElementById('hargaJual').value = item.hargaJual;
+            document.getElementById('stok').value = item.stok;
+            document.getElementById('status').value = item.status;
+            document.getElementById('bulkApplyCheckbox').checked = false;
+
+            populateItemFormSelects();
+
+            document.getElementById('kategori').value = item.kategori;
+            document.getElementById('satuan').value = item.satuan;
+
+            // COA
+            if (item.coaCode && item.coaName) {
+                document.getElementById('selectedCoaDisplay').innerHTML = `
+                    <span class="font-mono text-emerald-700">${item.coaCode}</span> 
+                    <span class="font-medium text-slate-700">${item.coaName}</span>
+                `;
+                document.getElementById('coaCode').value = item.coaCode;
+                document.getElementById('coaName').value = item.coaName;
+            } else {
+                document.getElementById('selectedCoaDisplay').innerHTML = `<span class="text-slate-400">Belum dipilih</span>`;
+            }
+
+            document.getElementById('itemModal').classList.remove('hidden');
+            document.getElementById('itemModal').classList.add('flex');
+        }
+
+        function closeItemModal() {
+            document.getElementById('itemModal').classList.remove('flex');
+            document.getElementById('itemModal').classList.add('hidden');
+            currentEditId = null;
+        }
+
+        function saveItem() {
+            const kode = document.getElementById('kode').value.trim();
+            const nama = document.getElementById('nama').value.trim();
+            const kategori = document.getElementById('kategori').value;
+            const satuan = document.getElementById('satuan').value;
+            const hargaBeli = parseFloat(document.getElementById('hargaBeli').value) || 0;
+            const hargaJual = parseFloat(document.getElementById('hargaJual').value) || 0;
+            const stok = parseInt(document.getElementById('stok').value) || 0;
+            const status = document.getElementById('status').value;
+
+            const coaCode = document.getElementById('coaCode').value;
+            const coaName = document.getElementById('coaName').value;
+            const applyBulk = document.getElementById('bulkApplyCheckbox').checked;
+
+            if (!kode || !nama) {
+                alert("Kode dan Nama item wajib diisi.");
+                return;
+            }
+
+            const itemData = {
+                kode, nama, kategori, satuan,
+                hargaBeli, hargaJual, stok, status,
+                coaCode: coaCode || '', 
+                coaName: coaName || ''
+            };
+
+            if (currentEditId) {
+                const index = items.findIndex(i => i.id === currentEditId);
+                items[index] = { ...items[index], ...itemData };
+                alert("Item berhasil diperbarui.");
+            } else {
+                const newId = Math.max(0, ...items.map(i => i.id)) + 1;
+                items.push({ id: newId, ...itemData });
+                alert("Item baru berhasil ditambahkan.");
+            }
+
+            // Bulk apply logic
+            if (applyBulk && coaCode && kategori) {
+                const confirmBulk = confirm(`Akun COA ${coaCode} - ${coaName} akan diterapkan ke semua item kategori "${kategori}". Lanjutkan?`);
+                if (confirmBulk) {
+                    let count = 0;
+                    items.forEach((item, idx) => {
+                        if (item.kategori === kategori) {
+                            items[idx].coaCode = coaCode;
+                            items[idx].coaName = coaName;
+                            count++;
+                        }
+                    });
+                    alert(`Berhasil menerapkan akun ke ${count} item kategori ${kategori}.`);
+                }
+            }
+
+            closeItemModal();
+            renderTable();
+            populateFilters();
+        }
+
+        // ==================== DELETE ITEM ====================
+        function deleteItem(id) {
+            if (!confirm("Yakin ingin menghapus item ini?")) return;
+            items = items.filter(i => i.id !== id);
+            renderTable();
+            alert("Item berhasil dihapus.");
+        }
+
+        // ==================== EXPORT / IMPORT ====================
+        function exportData() {
+            const headers = ["Kode","Nama Item","Kategori","Satuan","Harga Beli","Harga Jual","Stok","Status","Kode COA","Nama COA"];
+            let csvContent = headers.join(",") + "\n";
+
+            items.forEach(item => {
+                const row = [
+                    item.kode, 
+                    `"${item.nama}"`, 
+                    item.kategori, 
+                    item.satuan, 
+                    item.hargaBeli, 
+                    item.hargaJual, 
+                    item.stok, 
+                    item.status, 
+                    item.coaCode || "", 
+                    item.coaName || ""
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "master_item.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function importData() {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".csv";
+            input.onchange = function() {
+                alert("Fitur import CSV sedang dalam pengembangan. Silakan gunakan format template yang di-download.");
+            };
+            input.click();
+        }
+
+        // ==================== COA PICKER ====================
+        function openCoaPickerModal() {
+            document.getElementById('coaPickerModal').classList.remove('hidden');
+            document.getElementById('coaPickerModal').classList.add('flex');
+            filterCoaList();
+        }
+
+        function closeCoaPickerModal() {
+            document.getElementById('coaPickerModal').classList.remove('flex');
+            document.getElementById('coaPickerModal').classList.add('hidden');
+        }
+
+        function filterCoaList() {
+            const search = document.getElementById('coaSearchInput').value.toLowerCase();
+            const container = document.getElementById('coaListContainer');
+            container.innerHTML = '';
+
+            const filtered = coaList.filter(c => 
+                c.code.toLowerCase().includes(search) || 
+                c.name.toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="p-4 text-center text-sm text-slate-500">Tidak ada akun yang cocok</div>`;
+                return;
+            }
+
+            filtered.forEach(coa => {
+                const div = document.createElement('div');
+                div.className = `px-4 py-3 hover:bg-emerald-50 cursor-pointer flex justify-between items-center border-b last:border-none`;
+                div.innerHTML = `
+                    <div>
+                        <span class="font-mono font-semibold text-emerald-700">${coa.code}</span>
+                        <span class="ml-2 text-slate-800">${coa.name}</span>
+                    </div>
+                    <span class="text-xs px-2.5 py-0.5 bg-slate-100 text-slate-600 rounded-2xl">${coa.type}</span>
+                `;
+                div.onclick = () => selectCoa(coa);
+                container.appendChild(div);
+            });
+        }
+
+        function selectCoa(coa) {
+            document.getElementById('selectedCoaDisplay').innerHTML = `
+                <span class="font-mono text-emerald-700">${coa.code}</span> 
+                <span class="font-medium text-slate-700">${coa.name}</span>
+            `;
+            document.getElementById('coaCode').value = coa.code;
+            document.getElementById('coaName').value = coa.name;
+            closeCoaPickerModal();
+        }
+
+        // ==================== SETTINGS MODAL ====================
+        function openSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('hidden');
+            document.getElementById('settingsModal').classList.add('flex');
+            renderCategoryList();
+            renderUnitList();
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('flex');
+            document.getElementById('settingsModal').classList.add('hidden');
+            // Refresh main UI
+            renderTable();
+            populateFilters();
+            populateItemFormSelects();
+        }
+
+        // Category management
+        function renderCategoryList() {
+            const container = document.getElementById('categoryList');
+            container.innerHTML = '';
+
+            categories.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = `px-4 py-3 border-b flex items-center justify-between text-sm hover:bg-slate-50`;
+                div.innerHTML = `
+                    <div>
+                        <span class="font-medium">${cat.name}</span>
+                        <span class="ml-2 text-xs text-emerald-600 font-mono">${cat.code_prefix} • ${cat.code_length} digit</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="text-blue-600 hover:text-blue-700 p-1" onclick="editCategory(${cat.id})">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="text-red-600 hover:text-red-700 p-1" onclick="deleteCategory(${cat.id})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function showAddCategoryForm() {
+            document.getElementById('categoryForm').classList.remove('hidden');
+            document.getElementById('catName').value = '';
+            document.getElementById('catPrefix').value = '';
+            document.getElementById('catDigits').value = '3';
+            document.getElementById('saveCatBtn').onclick = () => saveCategory();
+        }
+
+        function editCategory(id) {
+            const cat = categories.find(c => c.id === id);
+            if (!cat) return;
+
+            document.getElementById('categoryForm').classList.remove('hidden');
+            document.getElementById('catName').value = cat.name;
+            document.getElementById('catPrefix').value = cat.code_prefix;
+            document.getElementById('catDigits').value = cat.code_length;
+            
+            document.getElementById('saveCatBtn').onclick = () => saveCategory(id);
+        }
+
+        function saveCategory(id = null) {
+            const name = document.getElementById('catName').value.trim();
+            const prefix = document.getElementById('catPrefix').value.trim().toUpperCase();
+            const length = parseInt(document.getElementById('catDigits').value);
+
+            if (!name || !prefix) {
+                alert("Nama dan Prefix wajib diisi.");
+                return;
+            }
+
+            if (id) {
+                // Edit
+                const idx = categories.findIndex(c => c.id === id);
+                categories[idx].name = name;
+                categories[idx].code_prefix = prefix;
+                categories[idx].code_length = length;
+            } else {
+                // Add
+                if (categories.find(c => c.name.toLowerCase() === name.toLowerCase())) {
+                    alert("Kategori dengan nama tersebut sudah ada.");
+                    return;
+                }
+                const newId = Math.max(0, ...categories.map(c => c.id || 0)) + 1;
+                categories.push({ id: newId, name, code_prefix: prefix, code_length: length });
+            }
+
+            document.getElementById('categoryForm').classList.add('hidden');
+            renderCategoryList();
+            populateItemFormSelects();
+            populateFilters();
+        }
+
+        function deleteCategory(id) {
+            if (!confirm("Hapus kategori ini?")) return;
+            categories = categories.filter(c => c.id !== id);
+            renderCategoryList();
+            populateItemFormSelects();
+            populateFilters();
+        }
+
+        function cancelCategoryForm() {
+            document.getElementById('categoryForm').classList.add('hidden');
+        }
+
+        // Unit management
+        function renderUnitList() {
+            const container = document.getElementById('unitList');
+            container.innerHTML = '';
+
+            units.forEach(unit => {
+                const div = document.createElement('div');
+                div.className = `px-4 py-3 border-b flex items-center justify-between text-sm hover:bg-slate-50`;
+                div.innerHTML = `
+                    <span class="font-medium">${unit.name}</span>
+                    <div class="flex gap-2">
+                        <button class="text-blue-600 hover:text-blue-700 p-1" onclick="editUnit(${unit.id})">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="text-red-600 hover:text-red-700 p-1" onclick="deleteUnit(${unit.id})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function showAddUnitForm() {
+            document.getElementById('unitForm').classList.remove('hidden');
+            document.getElementById('unitName').value = '';
+            document.getElementById('saveUnitBtn').onclick = () => saveUnit();
+        }
+
+        function editUnit(id) {
+            const unit = units.find(u => u.id === id);
+            if (!unit) return;
+
+            document.getElementById('unitForm').classList.remove('hidden');
+            document.getElementById('unitName').value = unit.name;
+            document.getElementById('saveUnitBtn').onclick = () => saveUnit(id);
+        }
+
+        function saveUnit(id = null) {
+            const name = document.getElementById('unitName').value.trim();
+            if (!name) {
+                alert("Nama satuan wajib diisi.");
+                return;
+            }
+
+            if (id) {
+                const idx = units.findIndex(u => u.id === id);
+                units[idx].name = name;
+            } else {
+                if (units.find(u => u.name.toLowerCase() === name.toLowerCase())) {
+                    alert("Satuan tersebut sudah ada.");
+                    return;
+                }
+                const newId = Math.max(0, ...units.map(u => u.id || 0)) + 1;
+                units.push({ id: newId, name });
+            }
+
+            document.getElementById('unitForm').classList.add('hidden');
+            renderUnitList();
+            populateItemFormSelects();
+            populateFilters();
+        }
+
+        function deleteUnit(id) {
+            if (!confirm("Hapus satuan ini?")) return;
+            units = units.filter(u => u.id !== id);
+            renderUnitList();
+            populateItemFormSelects();
+            populateFilters();
+        }
+
+        function cancelUnitForm() {
+            document.getElementById('unitForm').classList.add('hidden');
+        }
+
+        // ==================== INITIALIZE ====================
+        function initialize() {
+            initTailwind();
+
+            // Initial render
+            renderTable();
+            populateFilters();
+            populateItemFormSelects();
+
+            // Seed some demo data if needed
+            if (items.length === 0) {
+                // already has demo data
+            }
+
+            // Demo: prefill one category in form for testing
+            console.log('%c[Master Item] Prototype siap. Desain diperbaiki & lebih estetik.', 'color:#64748b');
+        }
+
+        window.onload = initialize;
+    </script>
+</body>
+</html>

@@ -19,6 +19,27 @@ export default function Home() {
             Versi 0.1
           </span>
         </div>
+
+        {/* TEST SUPABASE */}
+        <div className="mt-8 rounded-xl bg-white p-4 shadow">
+          <p className="text-sm text-slate-500">
+            Supabase URL:
+          </p>
+
+          <p className="mt-2 text-sm font-medium text-emerald-600 break-all">
+            {process.env.NEXT_PUBLIC_SUPABASE_URL}
+          </p>
+        </div>
+
+        {/* TEST PENGATURAN */}
+        <div className="mt-8">
+          <a
+            href="/pengaturan"
+            className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition"
+          >
+            Test Halaman Pengaturan (klik untuk cek route)
+          </a>
+        </div>
       </div>
     </main>
   );
