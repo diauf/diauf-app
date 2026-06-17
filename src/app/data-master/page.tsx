@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -38,9 +40,19 @@ export default function DataMasterPage() {
   const [coaList, setCoaList] = useState<any[]>([]);
   const [showCoaModal, setShowCoaModal] = useState(false);
   const [coaModalLoading, setCoaModalLoading] = useState(false);
-  const [coaForm, setCoaForm] = useState({
+  type CoaForm = {
+    type: string;
+    parent_id: string | null;
+    code: string;
+    name: string;
+    normal_balance: string;
+    saldo_awal: number;
+    [key: string]: any; // allow dynamic updates from form inputs
+  };
+
+  const [coaForm, setCoaForm] = useState<CoaForm>({
     type: "Aset",
-    parent_id: null as string | null,
+    parent_id: null,
     code: "",           // full code if no parent, or suffix if has parent
     name: "",
     normal_balance: "Debit",
@@ -610,7 +622,7 @@ export default function DataMasterPage() {
       decimal_places: Math.max(0, Math.min(4, decimal_places)),
     };
 
-    let error;
+    let error: any = null;
     if (editingCurrencyId) {
       const { error: updateErr } = await supabase
         .from("currencies")
@@ -732,23 +744,7 @@ export default function DataMasterPage() {
   };
 
   // Helper: ambil kurs terbaru pada atau sebelum tanggal tertentu
-  const getExchangeRate = async (code: string, targetDate: string) => {
-    if (!profile?.company_id) return null;
-
-    const { data } = await supabase
-      .from("exchange_rates")
-      .select("rate, rate_date")
-      .eq("company_id", profile.company_id)
-      .eq("currency_code", code.toUpperCase())
-      .lte("rate_date", targetDate)
-      .order("rate_date", { ascending: false })
-      .limit(1);
-
-    if (data && data.length > 0) {
-      return { rate: data[0].rate, rate_date: data[0].rate_date };
-    }
-    return null;
-  };
+  // getExchangeRate helper removed (was unused)
 
   // ========== MASTER ITEM ==========
   const loadItems = async () => {
@@ -995,18 +991,39 @@ export default function DataMasterPage() {
 
   const addNewKategori = () => {
     const newCat = prompt("Masukkan nama kategori baru:");
-    if (newCat && newCat.trim() && !customCategories.includes(newCat.trim())) {
-      const trimmed = newCat.trim();
-      setCustomCategories([...customCategories, trimmed]);
+    if (!newCat || !newCat.trim()) return;
+
+    const trimmed = newCat.trim();
+    const currentCategories = itemCategories || [];
+    
+    const exists = currentCategories.some((c: any) => 
+      c.name.toLowerCase() === trimmed.toLowerCase()
+    );
+
+    if (!exists) {
+      const newCategory = { 
+        name: trimmed, 
+        code_prefix: trimmed.substring(0, 3).toUpperCase(), 
+        code_length: 3 
+      };
+      setItemCategories([...currentCategories, newCategory]);
       setItemForm((prev) => ({ ...prev, kategori: trimmed }));
     }
   };
 
   const addNewSatuan = () => {
     const newSat = prompt("Masukkan nama satuan baru:");
-    if (newSat && newSat.trim() && !customSatuan.includes(newSat.trim())) {
-      const trimmed = newSat.trim();
-      setCustomSatuan([...customSatuan, trimmed]);
+    if (!newSat || !newSat.trim()) return;
+
+    const trimmed = newSat.trim();
+    const currentUnits = itemUnits || [];
+    
+    const exists = currentUnits.some((u: any) => 
+      u.name.toLowerCase() === trimmed.toLowerCase()
+    );
+
+    if (!exists) {
+      setItemUnits([...currentUnits, { name: trimmed }]);
       setItemForm((prev) => ({ ...prev, satuan: trimmed }));
     }
   };
@@ -1115,7 +1132,7 @@ export default function DataMasterPage() {
       coa_name: coa_name || null,
     };
 
-    let error;
+    let error: any = null;
     if (editingItemId) {
       const { error: updateErr } = await supabase
         .from("master_items")
@@ -1142,7 +1159,11 @@ export default function DataMasterPage() {
 
     if (error) {
       console.error("Error saving item:", error);
-      alert("Gagal menyimpan item: " + (error.message || JSON.stringify(error)));
+      let userMessage = error.message || JSON.stringify(error);
+      if (!error.message && (!error || Object.keys(error).length === 0)) {
+        userMessage = "Gagal menyimpan (error kosong). Kemungkinan besar karena RLS (Row Level Security) policy di tabel 'master_items' di Supabase. Pastikan policy mengizinkan INSERT/UPDATE untuk company_id yang sesuai dengan profile user Anda. Cek juga apakah profile.company_id sudah benar.";
+      }
+      alert("Gagal menyimpan item: " + userMessage);
       return;
     }
 
@@ -1507,7 +1528,7 @@ export default function DataMasterPage() {
       status,
     };
 
-    let error;
+    let error: any = null;
     if (editingSupplierId) {
       const { error: updateErr } = await supabase.from("master_suppliers").update(payload).eq("id", editingSupplierId);
       error = updateErr;
@@ -1725,7 +1746,7 @@ export default function DataMasterPage() {
       status,
     };
 
-    let error;
+    let error: any = null;
     if (editingCustomerId) {
       const { error: updateErr } = await supabase.from("master_customers").update(payload).eq("id", editingCustomerId);
       error = updateErr;
@@ -2072,7 +2093,7 @@ export default function DataMasterPage() {
       berlaku_mulai,
     };
 
-    let error;
+    let error: any = null;
     if (editingHargaId) {
       const { error: updateErr } = await supabase.from("master_harga").update(payload).eq("id", editingHargaId);
       error = updateErr;
@@ -2420,7 +2441,8 @@ export default function DataMasterPage() {
           }
         }, 0);
       } else {
-        updated[name] = value;
+        // Cast to allow dynamic key from form input
+        (updated as Record<string, any>)[name] = value;
 
         // If type changes, reset parent (because parents must match type)
         if (name === "type") {
@@ -2495,7 +2517,7 @@ export default function DataMasterPage() {
       parent_id: coaForm.parent_id || null,
     };
 
-    let error;
+    let error: any = null;
     if (editingCoaId) {
       const { error: updateError } = await supabase
         .from("coa")
