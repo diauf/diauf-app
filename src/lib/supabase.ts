@@ -8,8 +8,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.error("NEXT_PUBLIC_SUPABASE_URL:", supabaseUrl ? "✅ OK" : "❌ MISSING");
   console.error("NEXT_PUBLIC_SUPABASE_ANON_KEY:", supabaseAnonKey ? "✅ OK" : "❌ MISSING");
   
-  // Jangan crash di production
-  throw new Error("Missing Supabase credentials. Check Vercel Environment Variables.");
+  // JANGAN CRASH aplikasi, hanya tampilkan warning
+  console.warn("⚠️ Supabase client tidak bisa dibuat. Beberapa fitur mungkin tidak berfungsi.");
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(
+  supabaseUrl || "", 
+  supabaseAnonKey || ""
+);
