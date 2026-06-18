@@ -135,14 +135,18 @@ const handleLogin = async (
         </p>
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-slate-400 mb-2">Belum punya akun?</p>
+          <p className="mb-3 text-sm text-slate-400">Belum punya akun?</p>
           <button
             onClick={() => router.push('/daftar')}
-            className="w-full rounded-xl border border-emerald-500 py-3 font-semibold text-emerald-600 transition hover:bg-emerald-50 active:bg-emerald-100"
+            className="mx-auto block w-full max-w-[380px] border border-emerald-500/80 bg-transparent px-6 py-4 text-sm font-semibold tracking-wide text-emerald-400 transition hover:border-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300 active:bg-emerald-500/15"
           >
-            Daftar Sekarang & Mulai Proses Asesmen Bisnis
+            Daftar dan mulai asesmen bisnis
           </button>
         </div>
+
+        <p className="mt-6 text-center text-xs text-slate-600">
+          Versi 1.0
+        </p>
       </div>
     </main>
   );
