@@ -193,19 +193,24 @@ const products = [
   {
     name: "DIAUF-GO.ID",
     text: "Portal web jualan atau toko online klien.",
+    logo: "/diauf-go-logo.png",
   },
   {
     name: "DIAUF RENTAL",
     text: "Portal manajemen rental.",
-    badge: "Belum Build",
+    logo: "/diauf-rental-logo.png",
   },
   {
     name: "ARTIKEL DIAUF",
     text: "Portal artikel dan bacaan bisnis.",
+    logo: "/diauf-artikel-logo.png",
+    badge: "Akses Gratis",
   },
   {
     name: "KALKULATOR BISNIS by DIAUF",
     text: "Portal hitung bisnis gratis seperti HPP, pajak, simulasi balik modal, dan lainnya.",
+    logo: "/diauf-kalkulator-logo.png",
+    badge: "Akses Gratis",
   },
 ];
 
@@ -567,15 +572,22 @@ export default function Home() {
             {products.map((product) => (
               <div
                 key={product.name}
-                className="group flex min-h-[210px] flex-col border-t border-slate-200 pt-7 transition hover:-translate-y-1"
+                className="group flex min-h-[210px] flex-col border-t border-slate-200 pt-7 text-center transition hover:-translate-y-1"
               >
-                <div className="mb-6 flex h-24 items-center">
-                  <div className="flex w-full items-center">
+                <div className="mb-4 flex h-6 items-center justify-center">
+                  {product.badge && (
+                    <span className="border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-emerald-700">
+                      {product.badge}
+                    </span>
+                  )}
+                </div>
+                <div className="mb-6 flex h-32 items-center justify-center">
+                  <div className="flex w-full items-center justify-center">
                     {product.logo ? (
                       <img
                         src={product.logo}
                         alt={product.name}
-                        className="-ml-3 h-auto max-h-24 w-full object-contain object-left transition group-hover:scale-[1.03]"
+                        className="h-auto max-h-32 w-full object-contain transition group-hover:scale-[1.03]"
                       />
                     ) : (
                       <p className="text-[22px] font-extrabold leading-[1.12] text-slate-950 transition group-hover:text-emerald-600">
@@ -587,11 +599,6 @@ export default function Home() {
                 <p className="text-sm leading-6 text-slate-600">
                   {product.text}
                 </p>
-                {product.badge && (
-                  <span className="mt-5 w-fit border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500">
-                    {product.badge}
-                  </span>
-                )}
               </div>
             ))}
           </div>
