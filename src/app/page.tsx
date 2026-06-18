@@ -241,7 +241,7 @@ export default function Home() {
               <a className="hover:text-emerald-300" href="#paket">
                 Paket
               </a>
-              <a className="hover:text-emerald-300" href="#artikel">
+              <a className="hover:text-emerald-300" href="/artikel">
                 Artikel
               </a>
               <a
@@ -268,7 +268,7 @@ export default function Home() {
                 ["Tentang", "#tentang"],
                 ["Layanan", "#layanan"],
                 ["Paket", "#paket"],
-                ["Artikel", "#artikel"],
+                ["Artikel", "/artikel"],
               ].map(([label, href]) => (
                 <a
                   key={href}
@@ -490,7 +490,7 @@ export default function Home() {
                 </h3>
                 <p className="leading-7 text-slate-600">{article.text}</p>
                 <a
-                  href="#artikel"
+                  href="/artikel"
                   className="mt-[15px] inline-block font-bold text-emerald-500"
                 >
                   Baca Artikel -&gt;
@@ -544,7 +544,7 @@ export default function Home() {
               <a className="mb-3 block hover:text-emerald-500" href="#paket">
                 Paket
               </a>
-              <a className="mb-3 block hover:text-emerald-500" href="#artikel">
+              <a className="mb-3 block hover:text-emerald-500" href="/artikel">
                 Artikel
               </a>
             </div>
