@@ -8,17 +8,23 @@ import {
   Calculator,
   ChartLine,
   ChartPie,
+  CreditCard,
   Lock,
   Mail,
   MapPin,
   Menu,
   MessageCircle,
   Phone,
+  Percent,
   ReceiptText,
+  ShoppingBag,
   Smartphone,
   Users,
   Bot,
   MapPinned,
+  Handshake,
+  Store,
+  Workflow,
 } from "lucide-react";
 
 const whatsappUrl = "https://wa.me/6281252510441";
@@ -26,8 +32,8 @@ const whatsappUrl = "https://wa.me/6281252510441";
 const dashboardFeatures = [
   {
     icon: Smartphone,
-    title: "Dashboard Owner",
-    text: "Pantau usaha langsung dari HP kapan saja dengan tampilan yang mudah dipahami.",
+    title: "Dashboard Responsif",
+    text: "Pantau usaha dari desktop, tablet, atau HP dengan tampilan yang tetap nyaman digunakan.",
   },
   {
     icon: Building2,
@@ -36,8 +42,8 @@ const dashboardFeatures = [
   },
   {
     icon: Calculator,
-    title: "HPP Produksi",
-    text: "Hitung biaya produksi dan margin usaha dengan metode yang sesuai bisnis Anda.",
+    title: "Modul Sesuai Jenis Usaha",
+    text: "Sistem DIAUF.ID mengikuti karakter bisnis Anda, bukan memaksa bisnis mengikuti alur software.",
   },
   {
     icon: ChartLine,
@@ -51,46 +57,66 @@ const modernFeatures = [
     icon: MapPinned,
     title: "GPS Armada",
     text: "Pantau kendaraan operasional, travel, atau armada pengiriman langsung dari dashboard.",
-    note: "Soon Available",
+    badge: "Segera Hadir",
   },
   {
     icon: Bot,
     title: "AI Business Insight",
     text: "AI membantu membaca data bisnis dan memberikan insight yang mudah dipahami owner.",
-    note: "Roadmap",
+    badge: "Dalam Pengembangan",
   },
   {
     icon: Users,
-    title: "SDM & Payroll",
-    text: "Kelola absensi, penggajian, dan data karyawan dalam satu sistem.",
+    title: "Manajemen SDM & Portal Karyawan",
+    text: "Kelola data karyawan, absensi, payroll, dan akses mandiri karyawan dalam satu sistem yang terhubung.",
   },
   {
     icon: Boxes,
     title: "Stok & Aset",
     text: "Pantau persediaan barang dan aset perusahaan secara realtime.",
   },
+  {
+    icon: CreditCard,
+    title: "POS Desktop & Mobile",
+    text: "Transaksi kasir lebih cepat di toko, booth, maupun lapangan dengan data penjualan yang langsung masuk ke dashboard.",
+  },
+  {
+    icon: Handshake,
+    title: "CRM Terintegrasi",
+    text: "Kelola prospek, pelanggan, follow up, dan riwayat komunikasi agar peluang penjualan tidak hilang di chat pribadi.",
+  },
+  {
+    icon: ShoppingBag,
+    title: "Rental Manajemen",
+    text: "Pantau unit, jadwal sewa, pembayaran, deposit, dan status pengembalian dalam satu alur yang rapi.",
+  },
+  {
+    icon: Store,
+    title: "Toko Online Terintegrasi",
+    text: "Berikan setiap user kanal jualan online yang tersambung dengan stok, harga, pesanan, dan data pelanggan.",
+  },
 ];
 
 const services = [
   {
     icon: BookOpen,
-    title: "Pembukuan",
-    text: "Pencatatan transaksi dan laporan keuangan yang rapi dan mudah dipahami.",
+    title: "Pendampingan Seperti Punya CFO Sendiri",
+    text: "Tim berpengalaman di bidang akuntansi dan pajak mendampingi penerapan sistem secara online maupun offline, bukan hanya menyerahkan software.",
   },
   {
     icon: ChartPie,
-    title: "Dashboard Bisnis",
-    text: "Pantau omzet, laba, kas, hutang, piutang dan performa usaha.",
+    title: "Satu Dashboard, Laporan Lebih Komprehensif",
+    text: "Data keuangan, operasional, stok, pelanggan, dan performa usaha terhubung dalam satu platform agar owner melihat gambaran bisnis secara utuh.",
   },
   {
-    icon: Users,
-    title: "SDM & Payroll",
-    text: "Kelola data karyawan, absensi dan penggajian.",
+    icon: Percent,
+    title: "Harga All-In yang Lebih Terjangkau",
+    text: "DIAUF.ID dibangun agar UMKM juga bisa menikmati sistem dan laporan realtime yang biasanya hanya mudah diakses perusahaan besar.",
   },
   {
-    icon: ReceiptText,
-    title: "Pajak Usaha",
-    text: "Pendampingan kepatuhan pajak dan administrasi perpajakan usaha.",
+    icon: Workflow,
+    title: "Flow Simpel, Desain Elegan Minimalis",
+    text: "Alur sistem dibuat ringkas dan mudah dipahami, sehingga tim lebih cepat belajar, lebih nyaman memakai, dan lebih konsisten menerapkan.",
   },
 ];
 
@@ -153,6 +179,36 @@ const plans = [
   },
 ];
 
+const products = [
+  {
+    name: "DIAUF.ID",
+    text: "Portal utama untuk sistem operasional bisnis terintegrasi.",
+    logo: "/diauf-product-logo.png",
+  },
+  {
+    name: "DIAUF Humanika",
+    text: "Portal khusus SDM dan HRD.",
+    logo: "/diauf-humanika-logo.png",
+  },
+  {
+    name: "DIAUF-GO.ID",
+    text: "Portal web jualan atau toko online klien.",
+  },
+  {
+    name: "DIAUF RENTAL",
+    text: "Portal manajemen rental.",
+    badge: "Belum Build",
+  },
+  {
+    name: "ARTIKEL DIAUF",
+    text: "Portal artikel dan bacaan bisnis.",
+  },
+  {
+    name: "KALKULATOR BISNIS by DIAUF",
+    text: "Portal hitung bisnis gratis seperti HPP, pajak, simulasi balik modal, dan lainnya.",
+  },
+];
+
 const articles = [
   {
     title: "5 Kesalahan Keuangan UMKM",
@@ -170,9 +226,11 @@ const articles = [
 
 function Logo({ className = "" }: { className?: string }) {
   return (
-    <div className={`font-extrabold tracking-tight text-white ${className}`}>
-      DIAUF<span className="text-emerald-500">.ID</span>
-    </div>
+    <img
+      src="/diauf-logo.png"
+      alt="DIAUF.ID"
+      className={`block h-auto object-contain ${className}`}
+    />
   );
 }
 
@@ -197,19 +255,23 @@ function FeatureCard({
   icon: Icon,
   title,
   text,
-  note,
+  badge,
 }: {
   icon: typeof Smartphone;
   title: string;
   text: string;
-  note?: string;
+  badge?: string;
 }) {
   return (
-    <div className="rounded-[24px] bg-white p-[30px] text-center shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-2 md:p-[35px]">
+    <div className="relative rounded-[24px] bg-white p-[30px] text-center shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-2 md:p-[35px]">
+      {badge && (
+        <div className="absolute right-5 top-5 border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-700">
+          {badge}
+        </div>
+      )}
       <Icon className="mx-auto mb-5 h-10 w-10 text-emerald-500" strokeWidth={2.2} />
       <h3 className="mb-3 text-xl font-bold text-slate-900">{title}</h3>
       <p className="text-[15px] leading-7 text-slate-600">{text}</p>
-      {note && <p className="mt-2.5 font-semibold text-emerald-500">{note}</p>}
     </div>
   );
 }
@@ -227,8 +289,8 @@ export default function Home() {
       <header className="fixed left-0 top-0 z-[999] w-full bg-[#081120]/[.92] backdrop-blur-[10px]">
         <div className="mx-auto w-[90%] max-w-[1200px]">
           <nav className="flex h-20 items-center justify-between">
-            <a href="#" aria-label="DIAUF.ID">
-              <Logo className="text-[30px]" />
+            <a href="#" aria-label="DIAUF.ID" className="inline-flex items-center">
+              <Logo className="-ml-4 w-[188px] sm:-ml-5 sm:w-[218px]" />
             </a>
 
             <div className="hidden items-center gap-7 font-medium text-white md:flex">
@@ -341,6 +403,20 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="layanan" className="scroll-mt-20 py-[100px]">
+        <div className="mx-auto w-[90%] max-w-[1200px]">
+          <SectionTitle
+            title="Kenapa DIAUF.ID Berbeda dengan Platform ERP Serupa?"
+            text="DIAUF.ID bukan hanya sistem. Kami menggabungkan teknologi, pendampingan, laporan yang komprehensif, dan alur kerja yang mudah diterapkan untuk UMKM."
+          />
+          <div className="grid gap-[25px] md:grid-cols-4">
+            {services.map((service) => (
+              <FeatureCard key={service.title} {...service} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-[100px]">
         <div className="mx-auto w-[90%] max-w-[1200px]">
           <SectionTitle
@@ -391,36 +467,44 @@ export default function Home() {
             title="Mengapa Banyak UMKM Beralih ke DIAUF.ID?"
             text="Lebih hemat dibanding merekrut finance internal, namun tetap mendapatkan sistem, dashboard, dan pendampingan profesional."
           />
-          <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_10px_30px_rgba(0,0,0,.06)]">
-            <div className="grid bg-[#081120] font-bold text-white md:grid-cols-2">
-              <div className="p-6 text-center">Finance Internal</div>
-              <div className="p-6 text-center">DIAUF.ID</div>
-            </div>
-            {comparisons.map(([left, right]) => (
-              <div
-                key={left}
-                className="grid border-b border-slate-100 last:border-b-0 md:grid-cols-2"
-              >
-                <div className="p-[22px] text-slate-700">{left}</div>
-                <div className="p-[22px] font-semibold text-emerald-500">
-                  {right}
-                </div>
+          <div className="overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-[0_24px_70px_rgba(15,23,42,.08)]">
+            <div className="grid gap-px bg-slate-200 md:grid-cols-2">
+              <div className="bg-[#081120] px-7 py-6 text-white md:px-9">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
+                  Cara lama
+                </p>
+                <h3 className="mt-2 text-xl font-bold">Finance Internal</h3>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="layanan" className="scroll-mt-20 py-[100px]">
-        <div className="mx-auto w-[90%] max-w-[1200px]">
-          <SectionTitle
-            title="Layanan DIAUF.ID"
-            text="Dirancang untuk membantu owner memahami bisnisnya tanpa harus tenggelam dalam data yang rumit."
-          />
-          <div className="grid gap-[25px] md:grid-cols-4">
-            {services.map((service) => (
-              <FeatureCard key={service.title} {...service} />
-            ))}
+              <div className="bg-[#081120] px-7 py-6 text-white md:px-9">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-300">
+                  Dengan sistem
+                </p>
+                <h3 className="mt-2 text-xl font-bold">DIAUF.ID</h3>
+              </div>
+            </div>
+            <div className="divide-y divide-slate-100">
+              {comparisons.map(([left, right], index) => (
+                <div
+                  key={left}
+                  className="grid gap-0 transition hover:bg-slate-50 md:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)]"
+                >
+                  <div className="flex items-start gap-4 px-7 py-6 text-slate-600 md:px-9">
+                    <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-xs font-bold text-slate-400">
+                      {index + 1}
+                    </span>
+                    <p className="leading-7">{left}</p>
+                  </div>
+                  <div className="flex items-start gap-4 border-t border-slate-100 px-7 pb-6 text-slate-900 md:border-l md:border-t-0 md:px-9 md:py-6">
+                    <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-emerald-600">
+                      ✓
+                    </span>
+                    <p className="font-semibold leading-7 text-emerald-600">
+                      {right}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -466,6 +550,47 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-[100px]">
+        <div className="mx-auto w-[90%] max-w-[1200px]">
+          <SectionTitle
+            title="Produk DIAUF.ID"
+            text="Ekosistem layanan DIAUF dirancang untuk mengikuti kebutuhan bisnis yang berbeda-beda."
+          />
+          <div className="grid gap-x-8 gap-y-12 md:grid-cols-3 xl:grid-cols-6">
+            {products.map((product) => (
+              <div
+                key={product.name}
+                className="group flex min-h-[210px] flex-col border-t border-slate-200 pt-7 transition hover:-translate-y-1"
+              >
+                <div className="mb-6 flex h-24 items-center">
+                  <div className="flex w-full items-center">
+                    {product.logo ? (
+                      <img
+                        src={product.logo}
+                        alt={product.name}
+                        className="-ml-3 h-auto max-h-24 w-full object-contain object-left transition group-hover:scale-[1.03]"
+                      />
+                    ) : (
+                      <p className="text-[22px] font-extrabold leading-[1.12] text-slate-950 transition group-hover:text-emerald-600">
+                        {product.name}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <p className="text-sm leading-6 text-slate-600">
+                  {product.text}
+                </p>
+                {product.badge && (
+                  <span className="mt-5 w-fit border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500">
+                    {product.badge}
+                  </span>
                 )}
               </div>
             ))}
@@ -523,7 +648,7 @@ export default function Home() {
         <div className="mx-auto w-[90%] max-w-[1200px]">
           <div className="grid gap-[50px] md:grid-cols-[2fr_1fr_1fr_1fr]">
             <div>
-              <Logo className="mb-[18px] text-[32px]" />
+              <Logo className="mb-[18px] w-[220px]" />
               <p className="mb-3 max-w-[420px] leading-8">
                 Kelola Keuangan, Pajak, dan Operasional Usaha dalam Satu
                 Sistem.
@@ -552,7 +677,7 @@ export default function Home() {
             <div>
               <h4 className="mb-5 font-bold text-white">Fitur Unggulan</h4>
               <a className="mb-3 block hover:text-emerald-500" href="#demo">
-                Dashboard Owner
+                Dashboard Responsif
               </a>
               <a className="mb-3 block hover:text-emerald-500" href="#demo">
                 Multi Cabang
