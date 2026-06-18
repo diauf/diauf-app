@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import Sidebar from "../component/Sidebar";
@@ -25,7 +25,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-export default function PengaturanPage() {
+function PengaturanContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [collapsed, setCollapsed] = useState(false);
@@ -2042,6 +2042,14 @@ export default function PengaturanPage() {
       </div>
       )}
     </div>
+  );
+}
+
+export default function PengaturanPage() {
+  return (
+    <Suspense fallback={null}>
+      <PengaturanContent />
+    </Suspense>
   );
 }
 

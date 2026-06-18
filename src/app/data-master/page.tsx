@@ -2,7 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import Sidebar from "../component/Sidebar";
@@ -26,7 +26,7 @@ import {
   Tag,
 } from "lucide-react";
 
-export default function DataMasterPage() {
+function DataMasterContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [collapsed, setCollapsed] = useState(false);
@@ -5583,5 +5583,13 @@ export default function DataMasterPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function DataMasterPage() {
+  return (
+    <Suspense fallback={null}>
+      <DataMasterContent />
+    </Suspense>
   );
 }
